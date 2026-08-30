@@ -7,7 +7,7 @@ Observed results:
 - `./scripts/validate-phase0.sh`: `Phase 0 structural validation passed`;
 - Redocly CLI: API description valid, with advisory warnings that generic `default` problem responses are not explicit `4XX` responses;
 - `git diff --check`: passed;
-- commit evidence: pending because the repository has no initial commit and pre-existing root documents are untracked.
+- implementation commit: `7f45aee` (`docs: define Phase 0 architecture and contracts`).
 
 Run:
 
@@ -26,4 +26,4 @@ Acceptance requires:
 - whitespace validation passes;
 - a reviewer confirms the Phase 0 exit gate: ownership, authority, trust, temporal semantics, and deletion are unambiguous.
 
-The validation script provides structural evidence, not implementation proof for later phases. A commit SHA must be added to `TODO.md` only after these artifacts are committed.
+The validation script provides structural evidence, not implementation proof for later phases. `TODO.md` records the implementation commit SHA for every completed Phase 0 item.

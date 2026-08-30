@@ -13,7 +13,7 @@ Status notation:
 - `[ ]` pending
 - `[x]` implemented and verified
 
-Phase 0 artifacts have been implemented and structurally validated in the working tree. Its checkboxes remain open until the repository has an initial commit SHA, as required by the completion metadata contract; see `docs/phase-0-validation.md` and `docs/phase-0-traceability.md`.
+Phase 0 artifacts were implemented and structurally validated in commit `7f45aee`; see `docs/phase-0-validation.md` and `docs/phase-0-traceability.md`.
 
 Completion metadata format:
 
@@ -23,96 +23,96 @@ Completion metadata format:
 
 ## Phase 0 — Decisions, threats, and contracts
 
-- [ ] ARC-001 Create `docs/`, `docs/adr/`, and `docs/contracts/` plus ADR template.
-- [ ] ARC-002 Write system-context diagram for MEM, AG, AR, WS, TG, LLMGW, GR, MP, PostgreSQL, Qdrant, and clients.
-- [ ] ARC-003 Write trust-boundary diagram distinguishing canonical memory, indexes, source systems, model extraction, runtime agents, and governance.
-- [ ] ARC-004 Write threat model including persistent prompt injection, memory poisoning, source spoofing, cross-space leakage, sensitive inference, stale memory, and malicious imported memory.
-- [ ] ARC-005 Record invariant: AR owns raw Session/execution truth; MEM owns learned long-term memory.
-- [ ] ARC-006 Record invariant: WS owns work/source content; MEM stores learned claims plus references.
-- [ ] ARC-007 Record invariant: memory recall does not grant capability.
-- [ ] ARC-008 Record invariant: memory content does not become governance policy.
-- [ ] ARC-009 Record invariant: ProcedureCandidate != approved Skill.
-- [ ] ARC-010 Record invariant: observation != inference.
-- [ ] ARC-011 Record invariant: confidence != source trust.
-- [ ] ARC-012 Record invariant: authoritative metadata cannot be modified by extraction models.
-- [ ] ARC-013 Record invariant: retrieval indexes are rebuildable projections, not canonical state.
-- [ ] ARC-014 Define MemorySpace model.
-- [ ] ARC-015 Define initial scope types: user, agent, workspace, team, organization, custom.
-- [ ] ARC-016 Define MemorySpace ownership, classification, residency, retention, read/write policy.
-- [ ] ARC-017 Define Episode schema.
-- [ ] ARC-018 Define Claim schema.
-- [ ] ARC-019 Define Relationship schema.
-- [ ] ARC-020 Define Outcome schema.
-- [ ] ARC-021 Define Lesson schema.
-- [ ] ARC-022 Define ProcedureCandidate schema.
-- [ ] ARC-023 Define ProfileSchema and Profile contracts.
-- [ ] ARC-024 Define Entity/subject identity representation.
-- [ ] ARC-025 Define source-kind vocabulary.
-- [ ] ARC-026 Define source-trust vocabulary.
-- [ ] ARC-027 Define confidence semantics.
-- [ ] ARC-028 Define classification vocabulary and crossing rules.
-- [ ] ARC-029 Define temporal model: valid_from, valid_until, observed_at, recorded_at, superseded_at.
-- [ ] ARC-030 Define Claim status transitions: active, disputed, superseded, withdrawn, quarantined, expired, deleted.
-- [ ] ARC-031 Define immutable MemoryRevision format.
-- [ ] ARC-032 Define correction semantics.
-- [ ] ARC-033 Define contradiction/dispute semantics.
-- [ ] ARC-034 Define temporal supersession semantics.
-- [ ] ARC-035 Define EvidenceReference schema.
-- [ ] ARC-036 Define AR evidence/reference format.
-- [ ] ARC-037 Define WS generation/component evidence/reference format.
-- [ ] ARC-038 Define TG invocation/result evidence/reference format.
-- [ ] ARC-039 Define user-message/explicit assertion provenance.
-- [ ] ARC-040 Define imported-memory provenance.
-- [ ] ARC-041 Define authoritative vs derived metadata classes.
-- [ ] ARC-042 Define IngestionEvent schema and idempotency.
-- [ ] ARC-043 Define MemoryCandidate schema.
-- [ ] ARC-044 Define candidate validation pipeline.
-- [ ] ARC-045 Define async extraction semantics.
-- [ ] ARC-046 Define MemoryExtractor interface.
-- [ ] ARC-047 Define extraction strategy configuration.
-- [ ] ARC-048 Define Consolidator interface/semantics.
-- [ ] ARC-049 Define deduplication rules.
-- [ ] ARC-050 Define contradiction matching rules.
-- [ ] ARC-051 Define ContextPack schema.
-- [ ] ARC-052 Define retrieval query contract.
-- [ ] ARC-053 Define retrieval score signals.
-- [ ] ARC-054 Define retrieval warning model for dispute, staleness, low trust, poison risk.
-- [ ] ARC-055 Define ContextPack token/item budgeting.
-- [ ] ARC-056 Define RetrievalIndex interface.
-- [ ] ARC-057 Select Qdrant version/features for dense+sparse reference implementation.
-- [ ] ARC-058 Define embedding version/migration semantics.
-- [ ] ARC-059 Define lexical/sparse strategy.
-- [ ] ARC-060 Define graph relationships while explicitly deferring graph DB requirement.
-- [ ] ARC-061 Define MemoryGrant contract with ThinkPixelAG.
-- [ ] ARC-062 Define read/write/type/classification limits in MemoryGrant.
-- [ ] ARC-063 Define MemoryGrant expiry/revocation behavior.
-- [ ] ARC-064 Define standalone MemoryAuthorizer.
-- [ ] ARC-065 Define LLMGW extraction/embedding contract.
-- [ ] ARC-066 Define GR write-inspection contract.
-- [ ] ARC-067 Define GR retrieval-inspection contract.
-- [ ] ARC-068 Define procedure-candidate promotion boundary with MP.
-- [ ] ARC-069 Define retention policies and TTL.
-- [ ] ARC-070 Define forget-by-memory, subject, space, source, and data-subject semantics.
-- [ ] ARC-071 Define legal-hold seam.
-- [ ] ARC-072 Define deletion behavior for revisions/audit according to privacy vs compliance policy.
-- [ ] ARC-073 Define derived-index deletion/rebuild guarantees.
-- [ ] ARC-074 Define Profile field explainability requirements.
-- [ ] ARC-075 Define sensitive-inference restrictions.
-- [ ] ARC-076 Define poisoning/quarantine rules.
-- [ ] ARC-077 Define source corroboration policy seam.
-- [ ] ARC-078 Define PostgreSQL schema/invariants.
-- [ ] ARC-079 Define worker job/lease/fencing semantics.
-- [ ] ARC-080 Define transactional outbox.
-- [ ] ARC-081 Define authentication/OIDC/tenant mapping.
-- [ ] ARC-082 Define API authorization vs runtime MemoryGrant distinction.
-- [ ] ARC-083 Draft OpenAPI.
-- [ ] ARC-084 Define RFC 7807, UUIDv7, pagination, idempotency, W3C tracing, limits, SSE conventions.
-- [ ] ARC-085 Define audit/event vocabulary.
-- [ ] ARC-086 Define telemetry/redaction policy.
-- [ ] ARC-087 Define target SLOs/capacity assumptions.
-- [ ] ARC-088 Define supported-version policy for Go, PostgreSQL, Qdrant, LLMGW, GR, and relevant schemas.
-- [ ] ARC-089 Compare SecondContext concepts against new domain and document which ideas migrate, change, or remain experimental.
-- [ ] ARC-090 Validate Phase 0 schemas/docs/OpenAPI and commit evidence.
+- [x] ARC-001 Create `docs/`, `docs/adr/`, and `docs/contracts/` plus ADR template. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-002 Write system-context diagram for MEM, AG, AR, WS, TG, LLMGW, GR, MP, PostgreSQL, Qdrant, and clients. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-003 Write trust-boundary diagram distinguishing canonical memory, indexes, source systems, model extraction, runtime agents, and governance. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-004 Write threat model including persistent prompt injection, memory poisoning, source spoofing, cross-space leakage, sensitive inference, stale memory, and malicious imported memory. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-005 Record invariant: AR owns raw Session/execution truth; MEM owns learned long-term memory. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-006 Record invariant: WS owns work/source content; MEM stores learned claims plus references. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-007 Record invariant: memory recall does not grant capability. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-008 Record invariant: memory content does not become governance policy. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-009 Record invariant: ProcedureCandidate != approved Skill. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-010 Record invariant: observation != inference. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-011 Record invariant: confidence != source trust. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-012 Record invariant: authoritative metadata cannot be modified by extraction models. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-013 Record invariant: retrieval indexes are rebuildable projections, not canonical state. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-014 Define MemorySpace model. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-015 Define initial scope types: user, agent, workspace, team, organization, custom. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-016 Define MemorySpace ownership, classification, residency, retention, read/write policy. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-017 Define Episode schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-018 Define Claim schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-019 Define Relationship schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-020 Define Outcome schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-021 Define Lesson schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-022 Define ProcedureCandidate schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-023 Define ProfileSchema and Profile contracts. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-024 Define Entity/subject identity representation. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-025 Define source-kind vocabulary. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-026 Define source-trust vocabulary. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-027 Define confidence semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-028 Define classification vocabulary and crossing rules. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-029 Define temporal model: valid_from, valid_until, observed_at, recorded_at, superseded_at. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-030 Define Claim status transitions: active, disputed, superseded, withdrawn, quarantined, expired, deleted. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-031 Define immutable MemoryRevision format. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-032 Define correction semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-033 Define contradiction/dispute semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-034 Define temporal supersession semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-035 Define EvidenceReference schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-036 Define AR evidence/reference format. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-037 Define WS generation/component evidence/reference format. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-038 Define TG invocation/result evidence/reference format. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-039 Define user-message/explicit assertion provenance. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-040 Define imported-memory provenance. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-041 Define authoritative vs derived metadata classes. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-042 Define IngestionEvent schema and idempotency. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-043 Define MemoryCandidate schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-044 Define candidate validation pipeline. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-045 Define async extraction semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-046 Define MemoryExtractor interface. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-047 Define extraction strategy configuration. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-048 Define Consolidator interface/semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-049 Define deduplication rules. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-050 Define contradiction matching rules. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-051 Define ContextPack schema. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-052 Define retrieval query contract. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-053 Define retrieval score signals. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-054 Define retrieval warning model for dispute, staleness, low trust, poison risk. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-055 Define ContextPack token/item budgeting. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-056 Define RetrievalIndex interface. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-057 Select Qdrant version/features for dense+sparse reference implementation. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-058 Define embedding version/migration semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-059 Define lexical/sparse strategy. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-060 Define graph relationships while explicitly deferring graph DB requirement. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-061 Define MemoryGrant contract with ThinkPixelAG. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-062 Define read/write/type/classification limits in MemoryGrant. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-063 Define MemoryGrant expiry/revocation behavior. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-064 Define standalone MemoryAuthorizer. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-065 Define LLMGW extraction/embedding contract. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-066 Define GR write-inspection contract. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-067 Define GR retrieval-inspection contract. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-068 Define procedure-candidate promotion boundary with MP. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-069 Define retention policies and TTL. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-070 Define forget-by-memory, subject, space, source, and data-subject semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-071 Define legal-hold seam. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-072 Define deletion behavior for revisions/audit according to privacy vs compliance policy. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-073 Define derived-index deletion/rebuild guarantees. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-074 Define Profile field explainability requirements. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-075 Define sensitive-inference restrictions. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-076 Define poisoning/quarantine rules. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-077 Define source corroboration policy seam. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-078 Define PostgreSQL schema/invariants. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-079 Define worker job/lease/fencing semantics. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-080 Define transactional outbox. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-081 Define authentication/OIDC/tenant mapping. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-082 Define API authorization vs runtime MemoryGrant distinction. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-083 Draft OpenAPI. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-084 Define RFC 7807, UUIDv7, pagination, idempotency, W3C tracing, limits, SSE conventions. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-085 Define audit/event vocabulary. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-086 Define telemetry/redaction policy. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-087 Define target SLOs/capacity assumptions. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-088 Define supported-version policy for Go, PostgreSQL, Qdrant, LLMGW, GR, and relevant schemas. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-089 Compare SecondContext concepts against new domain and document which ideas migrate, change, or remain experimental. — completed 2026-08-30, commit 7f45aee, evidence: docs/phase-0-traceability.md
+- [x] ARC-090 Validate Phase 0 schemas/docs/OpenAPI and commit evidence. — completed 2026-08-30, commit 7f45aee, evidence: ./scripts/validate-phase0.sh; npx --yes @redocly/cli lint api/openapi/openapi.yaml; git diff --check
 
 ---
 
