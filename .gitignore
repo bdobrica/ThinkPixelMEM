@@ -1,0 +1,3 @@
+# Local cross-repository audit input; never part of the component source tree.
+/AUDIT_SUMMARY.md
+/ALIGNMENT.md

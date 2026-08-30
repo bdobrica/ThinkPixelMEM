@@ -5,6 +5,9 @@ repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_dir"
 
 required=(
+  AGENTS.md
+  ALIGNMENT.md
+  docs/README.md
   docs/adr/template.md
   docs/adr/0001-service-boundaries.md
   docs/adr/0002-canonical-state-and-projections.md
@@ -33,7 +36,7 @@ python3 - <<'PY'
 from pathlib import Path
 import re
 
-for path in [Path("README.md"), Path("PLAN.md"), *Path("docs").rglob("*.md")]:
+for path in [Path("AGENTS.md"), Path("ALIGNMENT.md"), Path("README.md"), Path("PLAN.md"), *Path("docs").rglob("*.md")]:
     text = path.read_text(encoding="utf-8")
     if text.count("```") % 2:
         raise SystemExit(f"unbalanced Markdown fences: {path}")
@@ -56,6 +59,14 @@ spec = Path("api/openapi/openapi.yaml").read_text(encoding="utf-8")
 for token in ("openapi: 3.1.0", "application/problem+json", "Idempotency-Key", "text/event-stream", "openIdConnect"):
     if token not in spec:
         raise SystemExit(f"OpenAPI convention missing: {token}")
+
+for token in ("thinkpixel.mem.retrieval-request.v1", "thinkpixel.mem.context-pack.v1"):
+    if token not in spec:
+        raise SystemExit(f"versioned memory contract missing: {token}")
+
+integrations = Path("docs/contracts/integrations.md").read_text(encoding="utf-8")
+if "thinkpixel.mem.memory-grant.v1" not in integrations:
+    raise SystemExit("versioned MemoryGrant contract missing")
 print("Phase 0 structural validation passed")
 PY
 

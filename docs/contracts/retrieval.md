@@ -2,7 +2,7 @@
 
 ## Retrieval request
 
-Inputs are tenant/caller identity, MemoryGrant or standalone authorization, query/goal, allowed MemorySpaces, subjects/entities, memory types, classification ceiling, `as_of`/validity filters, minimum trust/confidence, item and token budgets, cursor, and debug flag.
+Inputs include an explicit `schema_version` (initially `thinkpixel.mem.retrieval-request.v1`), tenant/caller identity, MemoryGrant or standalone authorization, query/goal, allowed MemorySpaces, subjects/entities, memory types, classification ceiling, `as_of`/validity filters, minimum trust/confidence, item and token budgets, cursor, and debug flag.
 
 Authorization intersects—not unions—the request with the grant. Scope, tenant, type, classification, status, deletion, and temporal rules are enforced before query and rechecked against PostgreSQL after index candidate retrieval.
 
@@ -27,7 +27,7 @@ An inference may score highly but remains labeled. Low trust, disputed, stale, o
 
 ## ContextPack
 
-A ContextPack contains `id`, tenant, caller/Run reference, retrieval policy version, created/expiry timestamps, applied scopes/filters, budgets and usage, ordered items, warnings, and bounded evidence metadata.
+A ContextPack contains an explicit `schema_version` (initially `thinkpixel.mem.context-pack.v1`), `id`, tenant, caller/Run reference, retrieval policy version, created/expiry timestamps, applied scopes/filters, budgets and usage, ordered items, warnings, and bounded evidence metadata. Consumers reject unsupported major schema versions; additive compatible evolution remains within the declared major version.
 
 Every item contains memory ID/type, revision, normalized content or safe summary, status, confidence, source trust/kind, classification, temporal validity, evidence references, retrieval reason, component scores when authorized, and warnings. It never contains a capability, system instruction, or policy grant.
 
@@ -36,4 +36,3 @@ Budgeting is deterministic: exclude unauthorized/invalid items, group contradict
 ## Embedding migration
 
 Embedding metadata includes provider-neutral model ID, dimensions, normalization, strategy version, created time, and projection generation. A model change creates a new generation, dual-indexes during migration, atomically switches the active generation, and later deletes the old generation. Canonical memory identity/revision never changes.
-

@@ -4,7 +4,7 @@ All integrations use TLS, workload identity, explicit tenant/audience, W3C trace
 
 ## ThinkPixelAG MemoryGrant
 
-A signed grant contains issuer, audience `thinkpixelmem`, subject/principal, tenant, Run ID, unique grant ID, issued/not-before/expiry times, readable and writable MemorySpace IDs, allowed memory types, classification ceiling, operation set, per-request/item/token limits, and optional policy version. MEM validates signature, issuer, audience, tenant/Run binding, time window, revocation seam, and requested-operation intersection on every runtime call.
+A signed grant contains an explicit `schema_version` (initially `thinkpixel.mem.memory-grant.v1`), issuer, audience `thinkpixelmem`, subject/principal, tenant, Run ID, unique grant ID, issued/not-before/expiry times, readable and writable MemorySpace IDs, allowed memory types, classification ceiling, operation set, per-request/item/token limits, and optional policy version. MEM validates the schema version before interpreting the grant, then validates signature, issuer, audience, tenant/Run binding, time window, revocation seam, and requested-operation intersection on every runtime call. Unsupported major schema versions fail closed; compatible additive evolution remains within the declared major version.
 
 Expiry is fail closed. Revocation is checked through a bounded cache/introspection strategy selected by deployment policy. A grant never derives from memory content. Administrative API authorization uses OIDC scopes/roles and is distinct from a Run-scoped MemoryGrant.
 
@@ -33,4 +33,3 @@ Write inspection receives candidate ID, safe content, source/trust, classificati
 ## ThinkPixelMP
 
 MEM exports versioned ProcedureCandidates, MemoryStrategies, ProfileSchemas, or extractor/reranker configurations for evaluation. MP returns a separately identified qualified artifact and evidence. Qualification never mutates the candidate into a Skill and never authorizes use; ThinkPixelAG remains the authorization point.
-
