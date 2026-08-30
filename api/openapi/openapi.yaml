@@ -1,0 +1,545 @@
+openapi: 3.1.0
+info:
+  title: ThinkPixelMEM API
+  version: 0.1.0-alpha.1
+  description: Governed long-term memory and ContextPack API. Memory is evidence, not authority.
+  license: {name: Apache License 2.0, identifier: Apache-2.0}
+servers:
+  - url: https://{host}
+    variables:
+      host: {default: mem.invalid, description: Deployment API host}
+security:
+  - oidc: []
+tags:
+  - {name: MemorySpaces, description: Isolation and ownership boundaries}
+  - {name: Memories, description: Canonical learned memory}
+  - {name: Episodes, description: Retained occurrences}
+  - {name: Retrieval, description: Governed ContextPack retrieval}
+  - {name: Profiles, description: Explainable derived profiles}
+  - {name: Ingestion, description: Trusted event ingestion}
+  - {name: Lifecycle, description: "Correction, quarantine, and forgetting"}
+  - {name: Events, description: Versioned event stream}
+paths:
+  /v1/memory-spaces:
+    post:
+      summary: Create a MemorySpace
+      tags: [MemorySpaces]
+      operationId: createMemorySpace
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateMemorySpace'}
+      responses:
+        '201': {$ref: '#/components/responses/MemorySpace'}
+        '409': {$ref: '#/components/responses/Problem'}
+        default: {$ref: '#/components/responses/Problem'}
+    get:
+      summary: List MemorySpaces
+      tags: [MemorySpaces]
+      operationId: listMemorySpaces
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Page of MemorySpaces
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: {type: array, items: {$ref: '#/components/schemas/MemorySpace'}}
+                  next_cursor: {type: [string, 'null']}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/memory-spaces/{id}:
+    parameters: [$ref: '#/components/parameters/ID']
+    get:
+      summary: Get a MemorySpace
+      tags: [MemorySpaces]
+      operationId: getMemorySpace
+      responses:
+        '200': {$ref: '#/components/responses/MemorySpace'}
+        default: {$ref: '#/components/responses/Problem'}
+    delete:
+      summary: Delete a MemorySpace asynchronously
+      tags: [MemorySpaces]
+      operationId: deleteMemorySpace
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      responses:
+        '202': {$ref: '#/components/responses/Operation'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/memories:
+    post:
+      summary: Create an explicit memory
+      tags: [Memories]
+      operationId: createMemory
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateMemory'}
+      responses:
+        '201': {$ref: '#/components/responses/Memory'}
+        default: {$ref: '#/components/responses/Problem'}
+    get:
+      summary: List canonical memories
+      tags: [Memories]
+      operationId: listMemories
+      parameters:
+        - {name: memory_space_id, in: query, required: true, schema: {$ref: '#/components/schemas/UUIDv7'}}
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Page of memories
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: {type: array, items: {$ref: '#/components/schemas/Memory'}}
+                  next_cursor: {type: [string, 'null']}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/memories/{id}:
+    parameters: [$ref: '#/components/parameters/ID']
+    get:
+      summary: Get a canonical memory
+      tags: [Memories]
+      operationId: getMemory
+      responses:
+        '200': {$ref: '#/components/responses/Memory'}
+        default: {$ref: '#/components/responses/Problem'}
+    delete:
+      summary: Forget one memory asynchronously
+      tags: [Lifecycle]
+      operationId: forgetMemory
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      responses:
+        '202': {$ref: '#/components/responses/Operation'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/memories/{id}/correct:
+    parameters: [$ref: '#/components/parameters/ID']
+    post:
+      summary: Append a corrected memory revision
+      tags: [Memories]
+      operationId: correctMemory
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Correction'}
+      responses:
+        '200': {$ref: '#/components/responses/Memory'}
+        '409': {$ref: '#/components/responses/Problem'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/memories/{id}/quarantine:
+    parameters: [$ref: '#/components/parameters/ID']
+    post:
+      summary: Quarantine a memory
+      tags: [Lifecycle]
+      operationId: quarantineMemory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Reason'}
+      responses:
+        '200': {$ref: '#/components/responses/Memory'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/episodes:
+    post:
+      summary: Create an Episode
+      tags: [Episodes]
+      operationId: createEpisode
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateEpisode'}
+      responses:
+        '201': {$ref: '#/components/responses/Memory'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/episodes/{id}:
+    parameters: [$ref: '#/components/parameters/ID']
+    get:
+      summary: Get an Episode
+      tags: [Episodes]
+      operationId: getEpisode
+      responses:
+        '200': {$ref: '#/components/responses/Memory'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/context/retrieve:
+    post:
+      summary: Retrieve a governed ContextPack
+      tags: [Retrieval]
+      operationId: retrieveContext
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RetrievalRequest'}
+      responses:
+        '200':
+          description: Structured untrusted memory context
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ContextPack'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/context-packs/{id}:
+    parameters: [$ref: '#/components/parameters/ID']
+    get:
+      summary: Get persisted ContextPack metadata
+      tags: [Retrieval]
+      operationId: getContextPack
+      responses:
+        '200':
+          description: ContextPack metadata
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ContextPack'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/profile-schemas:
+    get:
+      summary: List ProfileSchemas
+      tags: [Profiles]
+      operationId: listProfileSchemas
+      responses:
+        '200':
+          description: Profile schemas
+          content:
+            application/json:
+              schema: {type: object, required: [items], properties: {items: {type: array, items: {$ref: '#/components/schemas/ProfileSchema'}}}}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/profiles/{profile_id}:
+    get:
+      summary: Get an explainable Profile
+      tags: [Profiles]
+      operationId: getProfile
+      parameters:
+        - {name: profile_id, in: path, required: true, schema: {$ref: '#/components/schemas/UUIDv7'}}
+      responses:
+        '200':
+          description: Explainable derived profile
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Profile'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/events/ingest:
+    post:
+      summary: Ingest a trusted source event
+      tags: [Ingestion]
+      operationId: ingestEvent
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/IngestionEvent'}
+      responses:
+        '202': {$ref: '#/components/responses/Operation'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/forget:
+    post:
+      summary: Forget memories selected by policy-supported scope
+      tags: [Lifecycle]
+      operationId: forget
+      parameters: [$ref: '#/components/parameters/IdempotencyKey']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ForgetRequest'}
+      responses:
+        '202': {$ref: '#/components/responses/Operation'}
+        '409': {$ref: '#/components/responses/Problem'}
+        default: {$ref: '#/components/responses/Problem'}
+  /v1/events:
+    get:
+      summary: Stream versioned memory events
+      tags: [Events]
+      operationId: streamEvents
+      parameters:
+        - {name: Last-Event-ID, in: header, required: false, schema: {type: string, maxLength: 200}}
+      responses:
+        '200':
+          description: Versioned memory event stream
+          content:
+            text/event-stream:
+              schema: {type: string}
+        default: {$ref: '#/components/responses/Problem'}
+components:
+  securitySchemes:
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://issuer.example.com/.well-known/openid-configuration
+  parameters:
+    ID:
+      name: id
+      in: path
+      required: true
+      schema: {$ref: '#/components/schemas/UUIDv7'}
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: {type: string, minLength: 16, maxLength: 200}
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema: {type: string, maxLength: 2048}
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema: {type: integer, minimum: 1, maximum: 200, default: 50}
+  responses:
+    Problem:
+      description: RFC 7807 problem
+      content:
+        application/problem+json:
+          schema: {$ref: '#/components/schemas/Problem'}
+    MemorySpace:
+      description: MemorySpace
+      content: {application/json: {schema: {$ref: '#/components/schemas/MemorySpace'}}}
+    Memory:
+      description: Canonical memory
+      content: {application/json: {schema: {$ref: '#/components/schemas/Memory'}}}
+    Operation:
+      description: Accepted asynchronous operation
+      content: {application/json: {schema: {$ref: '#/components/schemas/Operation'}}}
+  schemas:
+    UUIDv7:
+      type: string
+      format: uuid
+      pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+    Timestamp: {type: string, format: date-time}
+    Classification: {type: string, enum: [public, internal, confidential, restricted]}
+    SourceKind: {type: string, enum: [explicit-user-assertion, verified-tool-output, workspace-observation, agent-observation, model-inference, imported-external-memory, system-derived]}
+    SourceTrust: {type: string, enum: [untrusted, low, medium, high, verified]}
+    MemoryType: {type: string, enum: [episode, claim, relationship, outcome, lesson, procedure-candidate]}
+    MemoryStatus: {type: string, enum: [active, disputed, superseded, withdrawn, quarantined, expired, deleted]}
+    CreateMemorySpace:
+      type: object
+      additionalProperties: false
+      required: [scope_type, scope_subject, name, classification, residency, retention_policy_id, strategy_id]
+      properties:
+        scope_type: {type: string, enum: [user, agent, workspace, team, organization, custom]}
+        scope_subject: {type: string, minLength: 1, maxLength: 500}
+        name: {type: string, minLength: 1, maxLength: 200}
+        classification: {$ref: '#/components/schemas/Classification'}
+        residency: {type: array, minItems: 1, maxItems: 16, items: {type: string, maxLength: 50}}
+        retention_policy_id: {type: string, minLength: 1, maxLength: 200}
+        strategy_id: {type: string, minLength: 1, maxLength: 200}
+    MemorySpace:
+      allOf:
+        - $ref: '#/components/schemas/CreateMemorySpace'
+        - type: object
+          required: [id, state, created_at, updated_at]
+          properties:
+            id: {$ref: '#/components/schemas/UUIDv7'}
+            state: {type: string, enum: [active, suspended, deleting, deleted]}
+            created_at: {$ref: '#/components/schemas/Timestamp'}
+            updated_at: {$ref: '#/components/schemas/Timestamp'}
+    EvidenceReference:
+      type: object
+      additionalProperties: false
+      required: [id, kind, source_id, observed_at, source_trust, classification]
+      properties:
+        id: {$ref: '#/components/schemas/UUIDv7'}
+        kind: {type: string, enum: [ar-event, ar-run, ar-session, ws-generation, ws-component, tg-invocation, tg-result, user-message, external-document, imported-memory, model-extraction-request]}
+        source_id: {type: string, minLength: 1, maxLength: 1000}
+        immutable_version: {type: string, maxLength: 500}
+        digest: {type: string, maxLength: 200}
+        observed_at: {$ref: '#/components/schemas/Timestamp'}
+        source_trust: {$ref: '#/components/schemas/SourceTrust'}
+        classification: {$ref: '#/components/schemas/Classification'}
+    CreateMemory:
+      type: object
+      additionalProperties: false
+      required: [memory_space_id, type, content, classification]
+      properties:
+        memory_space_id: {$ref: '#/components/schemas/UUIDv7'}
+        type: {$ref: '#/components/schemas/MemoryType'}
+        content: {type: object, maxProperties: 100}
+        classification: {$ref: '#/components/schemas/Classification'}
+        valid_from: {type: [string, 'null'], format: date-time}
+        valid_until: {type: [string, 'null'], format: date-time}
+        evidence: {type: array, maxItems: 100, items: {$ref: '#/components/schemas/EvidenceReference'}}
+    Memory:
+      allOf:
+        - $ref: '#/components/schemas/CreateMemory'
+        - type: object
+          required: [id, revision, status, source_kind, source_trust, confidence, recorded_at]
+          properties:
+            id: {$ref: '#/components/schemas/UUIDv7'}
+            revision: {type: integer, minimum: 1}
+            status: {$ref: '#/components/schemas/MemoryStatus'}
+            source_kind: {$ref: '#/components/schemas/SourceKind'}
+            source_trust: {$ref: '#/components/schemas/SourceTrust'}
+            confidence: {type: number, minimum: 0, maximum: 1}
+            recorded_at: {$ref: '#/components/schemas/Timestamp'}
+    CreateEpisode:
+      type: object
+      additionalProperties: false
+      required: [memory_space_id, title, summary, occurred_from, classification]
+      properties:
+        memory_space_id: {$ref: '#/components/schemas/UUIDv7'}
+        title: {type: string, minLength: 1, maxLength: 300}
+        summary: {type: string, minLength: 1, maxLength: 10000}
+        occurred_from: {$ref: '#/components/schemas/Timestamp'}
+        occurred_until: {type: [string, 'null'], format: date-time}
+        classification: {$ref: '#/components/schemas/Classification'}
+        evidence: {type: array, maxItems: 100, items: {$ref: '#/components/schemas/EvidenceReference'}}
+    Correction:
+      type: object
+      additionalProperties: false
+      required: [expected_revision, content, reason]
+      properties:
+        expected_revision: {type: integer, minimum: 1}
+        content: {type: object, maxProperties: 100}
+        reason: {type: string, minLength: 1, maxLength: 1000}
+        evidence: {type: array, maxItems: 100, items: {$ref: '#/components/schemas/EvidenceReference'}}
+    Reason:
+      type: object
+      additionalProperties: false
+      required: [reason]
+      properties: {reason: {type: string, minLength: 1, maxLength: 1000}}
+    RetrievalRequest:
+      type: object
+      additionalProperties: false
+      required: [query, memory_space_ids, item_budget, token_budget]
+      properties:
+        query: {type: string, minLength: 1, maxLength: 10000}
+        goal: {type: string, maxLength: 2000}
+        memory_space_ids: {type: array, minItems: 1, maxItems: 100, items: {$ref: '#/components/schemas/UUIDv7'}}
+        memory_types: {type: array, uniqueItems: true, items: {$ref: '#/components/schemas/MemoryType'}}
+        classification_ceiling: {$ref: '#/components/schemas/Classification'}
+        as_of: {type: string, format: date-time}
+        item_budget: {type: integer, minimum: 1, maximum: 50}
+        token_budget: {type: integer, minimum: 1, maximum: 16000}
+        debug: {type: boolean, default: false}
+    ContextPack:
+      type: object
+      additionalProperties: false
+      required: [id, policy_version, created_at, items, warnings, budget]
+      properties:
+        id: {$ref: '#/components/schemas/UUIDv7'}
+        policy_version: {type: string, minLength: 1, maxLength: 200}
+        created_at: {$ref: '#/components/schemas/Timestamp'}
+        items: {type: array, maxItems: 50, items: {$ref: '#/components/schemas/ContextItem'}}
+        warnings: {type: array, maxItems: 100, items: {$ref: '#/components/schemas/Warning'}}
+        budget:
+          type: object
+          required: [item_limit, item_count, token_limit, estimated_tokens]
+          properties:
+            item_limit: {type: integer}
+            item_count: {type: integer}
+            token_limit: {type: integer}
+            estimated_tokens: {type: integer}
+    ContextItem:
+      type: object
+      additionalProperties: false
+      required: [memory_id, revision, type, content, status, confidence, source_trust, classification, evidence, retrieval_reason]
+      properties:
+        memory_id: {$ref: '#/components/schemas/UUIDv7'}
+        revision: {type: integer, minimum: 1}
+        type: {$ref: '#/components/schemas/MemoryType'}
+        content: {type: object}
+        status: {$ref: '#/components/schemas/MemoryStatus'}
+        confidence: {type: number, minimum: 0, maximum: 1}
+        source_trust: {$ref: '#/components/schemas/SourceTrust'}
+        classification: {$ref: '#/components/schemas/Classification'}
+        evidence: {type: array, maxItems: 100, items: {$ref: '#/components/schemas/EvidenceReference'}}
+        retrieval_reason: {type: string, maxLength: 1000}
+        warnings: {type: array, items: {$ref: '#/components/schemas/Warning'}}
+    Warning:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code: {type: string, enum: [disputed, stale, low-trust, poison-risk, truncated, oversized-item]}
+        message: {type: string, maxLength: 500}
+    ProfileSchema:
+      type: object
+      required: [id, name, version, fields]
+      properties:
+        id: {$ref: '#/components/schemas/UUIDv7'}
+        name: {type: string, maxLength: 200}
+        version: {type: string, maxLength: 100}
+        fields: {type: object}
+    Profile:
+      type: object
+      required: [id, schema_id, subject, fields, built_at]
+      properties:
+        id: {$ref: '#/components/schemas/UUIDv7'}
+        schema_id: {$ref: '#/components/schemas/UUIDv7'}
+        subject: {type: object}
+        fields:
+          type: object
+          additionalProperties:
+            type: object
+            required: [value, memory_ids, confidence, source_trust, updated_at]
+            properties:
+              value: {}
+              memory_ids: {type: array, minItems: 1, items: {$ref: '#/components/schemas/UUIDv7'}}
+              confidence: {type: number, minimum: 0, maximum: 1}
+              source_trust: {$ref: '#/components/schemas/SourceTrust'}
+              updated_at: {$ref: '#/components/schemas/Timestamp'}
+        built_at: {$ref: '#/components/schemas/Timestamp'}
+    IngestionEvent:
+      type: object
+      additionalProperties: false
+      required: [external_event_id, memory_space_id, source_service, source_kind, classification, occurred_at, content]
+      properties:
+        external_event_id: {type: string, minLength: 1, maxLength: 500}
+        memory_space_id: {$ref: '#/components/schemas/UUIDv7'}
+        source_service: {type: string, minLength: 1, maxLength: 100}
+        source_kind: {$ref: '#/components/schemas/SourceKind'}
+        classification: {$ref: '#/components/schemas/Classification'}
+        occurred_at: {$ref: '#/components/schemas/Timestamp'}
+        content: {type: object, maxProperties: 100}
+        evidence: {type: array, maxItems: 100, items: {$ref: '#/components/schemas/EvidenceReference'}}
+    ForgetRequest:
+      type: object
+      additionalProperties: false
+      required: [selector, reason]
+      properties:
+        selector:
+          type: object
+          additionalProperties: false
+          minProperties: 1
+          maxProperties: 1
+          properties:
+            memory_id: {$ref: '#/components/schemas/UUIDv7'}
+            subject_id: {type: string, maxLength: 500}
+            memory_space_id: {$ref: '#/components/schemas/UUIDv7'}
+            source_id: {type: string, maxLength: 1000}
+            data_subject_id: {type: string, maxLength: 500}
+        reason: {type: string, minLength: 1, maxLength: 1000}
+    Operation:
+      type: object
+      additionalProperties: false
+      required: [id, state, accepted_at]
+      properties:
+        id: {$ref: '#/components/schemas/UUIDv7'}
+        state: {type: string, enum: [accepted, running, succeeded, failed]}
+        accepted_at: {$ref: '#/components/schemas/Timestamp'}
+    Problem:
+      type: object
+      additionalProperties: true
+      required: [type, title, status]
+      properties:
+        type: {type: string, format: uri-reference}
+        title: {type: string}
+        status: {type: integer, minimum: 400, maximum: 599}
+        detail: {type: string}
+        instance: {type: string, format: uri-reference}
+        request_id: {type: string}
