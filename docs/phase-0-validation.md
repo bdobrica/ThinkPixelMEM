@@ -16,7 +16,7 @@ make verify
 npx --yes @redocly/cli lint api/openapi/openapi.yaml
 ```
 
-`make verify` is the stable local and CI entry point. It runs the Phase 0 structural checks, parses the OpenAPI YAML when Ruby is available, and checks the working tree for whitespace errors. The Redocly lint remains a separate optional network-dependent check.
+`make verify` is the stable local and CI entry point. In addition to the Phase 0 structural checks, OpenAPI validation and generated-artifact drift, and changed-file whitespace, it runs the repository's Go format, vet, lint, unit, race, vulnerability, license, and build gates. The Phase 0 script also parses the OpenAPI YAML when Ruby is available. The Redocly lint remains a separate optional network-dependent check. See the [developer command reference](operations/development.md) for focused targets.
 
 Acceptance requires:
 

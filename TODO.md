@@ -118,25 +118,25 @@ Completion metadata format:
 
 ## Phase 1 — Engineering foundation
 
-- [ ] ENG-001 Initialize Go module using supported pinned Go.
-- [ ] ENG-002 Create domain/app/ports/adapters repository layout.
-- [ ] ENG-003 Add dependency/source/license policy.
-- [ ] ENG-004 Implement typed configuration with validation and secret references.
-- [ ] ENG-005 Implement structured logging with memory/run/workspace correlation and secret-content redaction.
-- [ ] ENG-006 Implement Prometheus and OpenTelemetry initialization.
-- [ ] ENG-007 Add UUIDv7, typed memory IDs, injectable clock, typed errors, bounded strings, digests, authenticated cursors.
-- [ ] ENG-008 Implement HTTP baseline with request IDs, tracing, RFC 7807, limits, graceful shutdown, `/livez`, `/readyz`, `/metrics`.
-- [ ] ENG-009 Add OpenAPI generation/validation/drift checks.
-- [ ] ENG-010 Create root Makefile.
-- [ ] ENG-011 Add format/vet/lint/unit/race/vulnerability/license/build checks.
-- [ ] ENG-012 Add PostgreSQL development dependency/migration command.
-- [ ] ENG-013 Add disposable Qdrant development/test dependency.
-- [ ] ENG-014 Create `thinkpixelmemctl` CLI skeleton.
-- [ ] ENG-015 Create hardened non-root image.
-- [ ] ENG-016 Add CI.
-- [ ] ENG-017 Add hygiene checks preventing test memories, secrets, model keys, Qdrant dumps, and local DB artifacts from Git.
-- [ ] ENG-018 Start `docs/supported-versions.md`.
-- [ ] ENG-019 Run clean-checkout baseline gate.
+- [x] ENG-001 Initialize Go module using supported pinned Go. — completed 2026-09-01, evidence: `go.mod`; `.go-version`; `go version`; `go env GOMOD GOVERSION GOTOOLCHAIN`; `go mod edit -json`
+- [x] ENG-002 Create domain/app/ports/adapters repository layout. — completed 2026-09-01, evidence: `go list ./...`; layout comparison with `PLAN.md` §42; `git diff --check`
+- [x] ENG-003 Add dependency/source/license policy. — completed 2026-09-01, evidence: `docs/dependency-policy.md`; `go mod verify`; `go list -m all`; policy link validation; scoped `git diff --check`
+- [x] ENG-004 Implement typed configuration with validation and secret references. — completed 2026-09-01, evidence: `internal/config`; `docs/operations/configuration.md`; `go test ./internal/config`; `go test ./...`; `go vet ./...`; scoped `git diff --check`
+- [x] ENG-005 Implement structured logging with memory/run/workspace correlation and secret-content redaction. — completed 2026-09-01, evidence: `internal/telemetry/logging`; `docs/operations/logging.md`; `go test ./internal/telemetry/logging`; `go test ./...`; `go vet ./...`; scoped `git diff --check`
+- [x] ENG-006 Implement Prometheus and OpenTelemetry initialization. — completed 2026-09-01, evidence: `internal/telemetry`; `docs/operations/telemetry.md`; `go test ./internal/telemetry`; `go test ./...`; `go vet ./...`; scoped `git diff --check`
+- [x] ENG-007 Add UUIDv7, typed memory IDs, injectable clock, typed errors, bounded strings, digests, authenticated cursors. — completed 2026-09-01, evidence: `internal/domain`; `internal/ports/clock`; `internal/security`; `docs/operations/foundation-primitives.md`; `go test ./internal/domain ./internal/security ./internal/ports/clock`; `go test ./...`; `go vet ./...`; scoped `git diff --check`
+- [x] ENG-008 Implement HTTP baseline with request IDs, tracing, RFC 7807, limits, graceful shutdown, `/livez`, `/readyz`, `/metrics`. — completed 2026-09-01, evidence: `internal/adapters/http`; `docs/operations/http.md`; `go test ./internal/adapters/http`; `go test ./...`; `go vet ./...`; scoped `git diff --check`
+- [x] ENG-009 Add OpenAPI generation/validation/drift checks. — completed 2026-09-01, evidence: `api/openapi/oapi-codegen.yaml`; `internal/adapters/http/openapi/types.gen.go`; `internal/tools/openapicheck`; `scripts/openapi.sh`; `docs/operations/openapi.md`; `make openapi-validate`; `make openapi-check`; `go test ./...`; `go vet ./...`; scoped `git diff --check`
+- [x] ENG-010 Create root Makefile. — completed 2026-09-01, evidence: `Makefile`; `docs/operations/development.md`; `make help`; `make phase0-validate`; `make openapi-check`; scoped `git diff --check`
+- [x] ENG-011 Add format/vet/lint/unit/race/vulnerability/license/build checks. — completed 2026-09-01, evidence: `Makefile`; pinned Go tools in `go.mod`; `make format-check vet-check lint-check unit-check race-check vulnerability-check license-check build-check`; `go mod verify`; scoped `git diff --check`
+- [x] ENG-012 Add PostgreSQL development dependency/migration command. — completed 2026-09-01, evidence: `compose.yaml`; pinned Tern tool in `go.mod`; `docs/operations/postgresql.md`; `docker compose config --quiet`; `make migrate-status`; scoped `git diff --check`
+- [x] ENG-013 Add disposable Qdrant development/test dependency. — completed 2026-09-01, evidence: `compose.yaml`; `docs/operations/qdrant.md`; `docker compose config --quiet`; healthy `make qdrant-up`; scoped `git diff --check`
+- [x] ENG-014 Create `thinkpixelmemctl` CLI skeleton. — completed 2026-09-01, evidence: `cmd/thinkpixelmemctl`; `internal/cli`; `docs/operations/cli.md`; `go test ./internal/cli`; `make cli-build`; scoped `git diff --check`
+- [x] ENG-015 Create hardened non-root image. — completed 2026-09-01, evidence: `Dockerfile`; `.dockerignore`; `cmd/thinkpixelmem`; `docs/operations/container-image.md`; `make image-check`; `go test ./...`; scoped `git diff --check`
+- [x] ENG-016 Add CI. — completed 2026-09-01, evidence: `.github/workflows/ci.yml`; `docs/operations/continuous-integration.md`; workflow syntax validation; `make verify`; `make image-check`; scoped `git diff --check`
+- [x] ENG-017 Add hygiene checks preventing test memories, secrets, model keys, Qdrant dumps, and local DB artifacts from Git. — completed 2026-09-01, evidence: `.gitignore`; `internal/tools/repositoryhygiene`; `docs/operations/repository-hygiene.md`; `go test ./internal/tools/repositoryhygiene`; `make hygiene-check`; focused whitespace inspection
+- [x] ENG-018 Start `docs/supported-versions.md`. — completed 2026-09-01, evidence: `docs/supported-versions.md`; pin consistency inspection across `.go-version`, `go.mod`, `Dockerfile`, and `compose.yaml`; `make phase0-validate`; scoped `git diff --check`
+- [x] ENG-019 Run clean-checkout baseline gate. — completed 2026-09-01, evidence: clean committed 128-file repository snapshot; `make verify`; `make image-check`; clean post-gate `git status --porcelain`
 - [ ] ENG-020 Publish Phase 1 evidence and commit.
 
 ---
@@ -543,3 +543,6 @@ Supersede obsolete assumptions with a later entry.
 Date | TODO IDs | Commit | Verification evidence | Notes/deviations
 --- | --- | --- | --- | ---
 YYYY-MM-DD | `ARC-...` | `<sha>` | `<commands/artifacts>` | `<notes>`
+2026-09-01 | `ENG-001` | pending | `go version`; `go env GOMOD GOVERSION GOTOOLCHAIN`; `go mod edit -json` | Module `github.com/bdobrica/ThinkPixelMEM`; Go language baseline 1.26.0; toolchain pinned to 1.26.7 in `go.mod` and `.go-version`. Aggregate gate blocked by unrelated pre-existing CRLF working-tree changes.
+2026-09-01 | `ENG-002` | pending | `go list ./...`; layout comparison with `PLAN.md` §42; `git diff --check` | Added tracked package boundaries and empty placeholders only; executable, migration, deployment, and test implementations remain assigned to later TODO items.
+2026-09-01 | `ENG-003` | pending | `docs/dependency-policy.md`; `go mod verify`; `go list -m all`; policy link validation; scoped `git diff --check` | Defined dependency admission, source provenance, license review, vulnerability handling, and exception requirements; automated enforcement remains assigned to ENG-011 and release SBOM/provenance to Phase 9.

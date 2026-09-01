@@ -2,7 +2,7 @@
 
 ## API conventions
 
-The canonical API is REST/JSON described by OpenAPI 3.1. IDs are lowercase canonical UUIDv7 strings. Times are RFC 3339 UTC. Errors use `application/problem+json` (RFC 7807) with stable `type`, `title`, `status`, `detail`, `instance`, `request_id`, and optional field errors.
+The canonical API is REST/JSON described by OpenAPI 3.1. IDs are lowercase canonical UUIDv7 strings. Times are RFC 3339 UTC. Errors use `application/problem+json` (RFC 7807) with stable `type`, `title`, `status`, `detail`, `instance`, `request_id`, and optional field errors. Every response carries `X-Request-ID`. A caller-supplied value is propagated only when it is a canonical UUIDv7; otherwise MEM generates one. Request IDs are correlation, not identity or authority.
 
 Collection pagination uses an authenticated opaque cursor and bounded `limit` (default 50, maximum 200). Mutation retries use `Idempotency-Key`; reuse with a different digest returns `409`. Requests accept/propagate W3C `traceparent` and `tracestate`. Default JSON body limit is 1 MiB; explicit ingestion deployments may configure at most 4 MiB. String/list limits are schema-defined. SSE uses `text/event-stream`, `id`, `event`, and JSON `data`, resumes with `Last-Event-ID`, sends heartbeats, and never embeds unbounded memory content.
 
@@ -33,4 +33,3 @@ These are RC targets and must be revised using Phase 4 load evidence:
 - Recovery point: zero acknowledged canonical transactions; projection RPO is zero after rebuild.
 
 Reference capacity for initial tests is 100 tenants, 10 million canonical memories, 1,000 MemorySpaces per tenant, 100 writes/s sustained, 250 retrievals/s sustained, and 5x burst for one minute. Budgets assume 1 MiB public bodies, 4 MiB trusted ingestion, 200 list items, 50 ContextPack items, and configurable 16k estimated ContextPack tokens.
-

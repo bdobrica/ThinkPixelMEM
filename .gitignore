@@ -1,3 +1,39 @@
 # Local cross-repository audit input; never part of the component source tree.
 /AUDIT_SUMMARY.md
 /ALIGNMENT.md
+
+# Developer caches and build output.
+/.cache/
+
+# Local configuration and credential material. Templates remain reviewable.
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+secrets.yaml
+secrets.yml
+
+# Runtime memory fixtures and local persistence are never source artifacts.
+/testdata/memories/
+/test/memories/
+/tests/memories/
+*test-memor*.json
+*test-memor*.jsonl
+*test-memor*.yaml
+*test-memor*.yml
+qdrant_storage/
+.qdrant/
+*.snapshot
+pgdata/
+postgres-data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3

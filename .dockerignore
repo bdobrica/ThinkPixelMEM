@@ -1,0 +1,8 @@
+**
+!go.mod
+!go.sum
+!cmd/
+!cmd/thinkpixelmem/
+!cmd/thinkpixelmem/main.go
+!internal/
+!internal/**
