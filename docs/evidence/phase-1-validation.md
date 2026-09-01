@@ -58,5 +58,6 @@ git diff --check
 git status --porcelain
 ```
 
-The Phase 1 implementation commit is recorded in `TODO.md` after publication so
-the evidence does not attempt to embed the hash of the commit that contains it.
+The Phase 1 implementation commit is `1acffe3` (`feat: establish Phase 1
+engineering foundation`). Completion metadata is recorded in `TODO.md` by the
+follow-up evidence commit, matching the Phase 0 publication pattern.

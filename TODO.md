@@ -118,6 +118,8 @@ Completion metadata format:
 
 ## Phase 1 — Engineering foundation
 
+Phase 1 implementation commit: `1acffe3` (`ENG-001`–`ENG-020`).
+
 - [x] ENG-001 Initialize Go module using supported pinned Go. — completed 2026-09-01, evidence: `go.mod`; `.go-version`; `go version`; `go env GOMOD GOVERSION GOTOOLCHAIN`; `go mod edit -json`
 - [x] ENG-002 Create domain/app/ports/adapters repository layout. — completed 2026-09-01, evidence: `go list ./...`; layout comparison with `PLAN.md` §42; `git diff --check`
 - [x] ENG-003 Add dependency/source/license policy. — completed 2026-09-01, evidence: `docs/dependency-policy.md`; `go mod verify`; `go list -m all`; policy link validation; scoped `git diff --check`
@@ -136,8 +138,8 @@ Completion metadata format:
 - [x] ENG-016 Add CI. — completed 2026-09-01, evidence: `.github/workflows/ci.yml`; `docs/operations/continuous-integration.md`; workflow syntax validation; `make verify`; `make image-check`; scoped `git diff --check`
 - [x] ENG-017 Add hygiene checks preventing test memories, secrets, model keys, Qdrant dumps, and local DB artifacts from Git. — completed 2026-09-01, evidence: `.gitignore`; `internal/tools/repositoryhygiene`; `docs/operations/repository-hygiene.md`; `go test ./internal/tools/repositoryhygiene`; `make hygiene-check`; focused whitespace inspection
 - [x] ENG-018 Start `docs/supported-versions.md`. — completed 2026-09-01, evidence: `docs/supported-versions.md`; pin consistency inspection across `.go-version`, `go.mod`, `Dockerfile`, and `compose.yaml`; `make phase0-validate`; scoped `git diff --check`
-- [x] ENG-019 Run clean-checkout baseline gate. — completed 2026-09-01, evidence: clean committed 128-file repository snapshot; `make verify`; `make image-check`; clean post-gate `git status --porcelain`
-- [ ] ENG-020 Publish Phase 1 evidence and commit.
+- [x] ENG-019 Run clean-checkout baseline gate. — completed 2026-09-01, commit 1acffe3, evidence: clean committed 128-file repository snapshot; `make verify`; `make image-check`; clean post-gate `git status --porcelain`
+- [x] ENG-020 Publish Phase 1 evidence and commit. — completed 2026-09-01, commit 1acffe3, evidence: `docs/evidence/phase-1-validation.md`; implementation commit `1acffe3`
 
 ---
 
@@ -546,3 +548,4 @@ YYYY-MM-DD | `ARC-...` | `<sha>` | `<commands/artifacts>` | `<notes>`
 2026-09-01 | `ENG-001` | pending | `go version`; `go env GOMOD GOVERSION GOTOOLCHAIN`; `go mod edit -json` | Module `github.com/bdobrica/ThinkPixelMEM`; Go language baseline 1.26.0; toolchain pinned to 1.26.7 in `go.mod` and `.go-version`. Aggregate gate blocked by unrelated pre-existing CRLF working-tree changes.
 2026-09-01 | `ENG-002` | pending | `go list ./...`; layout comparison with `PLAN.md` §42; `git diff --check` | Added tracked package boundaries and empty placeholders only; executable, migration, deployment, and test implementations remain assigned to later TODO items.
 2026-09-01 | `ENG-003` | pending | `docs/dependency-policy.md`; `go mod verify`; `go list -m all`; policy link validation; scoped `git diff --check` | Defined dependency admission, source provenance, license review, vulnerability handling, and exception requirements; automated enforcement remains assigned to ENG-011 and release SBOM/provenance to Phase 9.
+2026-09-01 | `ENG-001`–`ENG-020` | `1acffe3` | `docs/evidence/phase-1-validation.md`; clean-checkout `make verify`; `make image-check`; clean post-gate `git status --porcelain` | Publishes and supersedes the earlier pending Phase 1 progress-log rows; Ruby's optional YAML parser check was unavailable, while required OpenAPI validation and drift checks passed.
